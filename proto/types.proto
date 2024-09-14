@@ -1,0 +1,78 @@
+syntax="proto3";
+
+
+option go_package = "github.com/NikoMalik/blockchain/proto";
+
+
+
+service Server {
+	rpc HandleTransaction(Transaction) returns (Result);
+	rpc HandShake(Version) returns (Version); 
+
+}
+
+
+
+message AddBlockRequest {
+	Block block = 1;
+	Version version = 2;
+}
+
+message AddBlockResponse {
+	Result result = 1;
+}
+
+message Result {
+	int32 code = 1;
+	string message = 2;
+}
+
+message None {}
+
+
+
+
+
+
+message Block {
+	Header header = 1;
+	repeated Transaction transactions = 2;
+}
+
+message Version {
+	int32 version = 1;
+	int32 height = 2;
+	 repeated string peerList = 3;
+}
+
+
+
+
+message Header {
+	int32 version = 1;
+	int32 height = 2;
+	bytes previousHash = 3;
+	bytes merkleRoot = 4;
+	int64 timestamp = 5;
+	uint32 nonce = 6;
+}
+
+message TxInput {
+	bytes prevTxHash = 1;
+	int32 outputIndex = 2;
+	bytes signature = 3;
+	bytes publicKey = 4;
+}
+
+message TxOutput {
+	bytes address = 1;
+	int64 amount = 2;
+}
+
+
+message Transaction {
+	int32 version = 1;
+	int64 timestamp = 2;
+	repeated TxInput inputs = 3;
+	repeated TxOutput outputs = 4;
+}
